@@ -196,67 +196,6 @@ export function registerAuthRoutes(app: Express) {
   });
 
   // =========================
-  // REGISTER
-  // =========================
-  app.post("/api/auth/register", async (req: Request, res: Response) => {
-    try {
-      const userData = req.body;
-      
-      const existingUser = await db.query.users.findFirst({
-        where: or(
-          eq(schema.users.email, userData.email), 
-          eq(schema.users.username, userData.username)
-        ),
-      });
-
-      if (existingUser) {
-        if (existingUser.email === userData.email) {
-          return res.status(400).json({ success: false, message: "Email already registered" });
-        }
-        return res.status(400).json({ success: false, message: "Username already taken" });
-      }
-
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
-      const verificationToken = crypto.randomBytes(32).toString("hex");
-      const tokenHash = crypto.createHash("sha256").update(verificationToken).digest("hex");
-      const expiresAt = verifyExpiresAt();
-
-      const [newUser] = await db.insert(schema.users).values({
-        username: userData.username,
-        email: userData.email,
-        password: hashedPassword,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        role: userData.role || "student",
-        gradeLevel: userData.gradeLevel || null,
-        emailVerificationToken: tokenHash,
-        emailVerificationExpires: expiresAt,
-        approvalStatus: userData.role === "teacher" ? "pending" : "approved",
-      }).returning({
-        id: schema.users.id,
-        username: schema.users.username,
-        email: schema.users.email,
-        firstName: schema.users.firstName,
-        lastName: schema.users.lastName,
-        role: schema.users.role,
-        gradeLevel: schema.users.gradeLevel,
-        emailVerified: schema.users.emailVerified,
-        approvalStatus: schema.users.approvalStatus,
-      });
-
-      await sendVerificationEmail(userData.email, verificationToken, userData.firstName || userData.username || "User");
-      res.status(201).json({ 
-        success: true, 
-        message: "Registration successful! Please check your email to verify your account.",
-        user: newUser
-      });
-    } catch (error) {
-      console.error("Error in registration:", error);
-      res.status(500).json({ success: false, message: "Registration failed" });
-    }
-  });
-
-  // =========================
   // LOGIN
   // =========================
   app.post("/api/auth/login", loginLimiter, async (req: Request, res: Response) => {
