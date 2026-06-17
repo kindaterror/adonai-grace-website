@@ -191,8 +191,8 @@ export default function StudentProgress() {
       if (!me?.id) throw new Error("No user id found");
 
       // use the shared helper → it normalizes {badges|earnedBadges|[]}
-      const list = await listUserBadges(me.id);
-      return Array.isArray(list) ? list : [];
+      const response = await listUserBadges(me.id);
+      return response.earnedBadges || [];
     },
   });
 

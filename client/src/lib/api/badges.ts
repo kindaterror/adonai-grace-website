@@ -96,10 +96,14 @@ export async function detachBadgeFromBook(bookId: number, badgeId: number): Prom
 /**
  * Get user's earned badges
  */
-export async function getUserBadges(userId: number): Promise<{ badges: EarnedBadge[] }> {
-  return apiGet<{ badges: EarnedBadge[] }>(`/api/users/${userId}/badges`);
+export async function getUserBadges(
+  userId: number
+): Promise<{ success: boolean; earnedBadges: EarnedBadge[] }> {
+  return apiGet<{
+    success: boolean;
+    earnedBadges: EarnedBadge[];
+  }>(`/api/users/${userId}/badges`);
 }
-
 /**
  * @deprecated Use getUserBadges instead
  */
