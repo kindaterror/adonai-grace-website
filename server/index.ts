@@ -22,6 +22,15 @@ const app = express();
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
 
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://adonai-and-grace-inc-edu.onrender.com"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+}));
+
 // Remove (where possible) the generic Server header sometimes added by upstream
 app.use((req, res, next) => { try { res.removeHeader('Server'); } catch {} next(); });
 
