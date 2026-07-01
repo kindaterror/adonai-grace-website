@@ -10,9 +10,9 @@ import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
 // Import book preview images for the dashboard
-import storybookImage from "@/assets/books/storybooks.png";
-import educationalBookImage from "@/assets/books/edubookicon.png";
-import animatedStorybookImage from "@/assets/books/2danimatedbook.png";
+import storybookImage from "@/assets/books/story_book.png";
+import educationalBookImage from "@/assets/books/edu_book.png";
+import animatedStorybookImage from "@/assets/books/2d_animated.png";
 
 // Interface for JWT payload
 interface JwtPayload {

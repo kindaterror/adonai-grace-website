@@ -438,7 +438,7 @@ export default function AddBook() {
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-blue-600" />
             <span className="text-sm font-bold text-slate-900 tracking-tight">
-              ILAW NG BAYAN LEARNING INSTITUTE
+              ADONAI & GRACE SCHOOL INC.
             </span>
           </div>
           <div className="flex items-center gap-2">
